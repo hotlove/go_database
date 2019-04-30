@@ -36,7 +36,7 @@ func (userDao *UserDao) InserProfile(params ...interface{})  {
 	fmt.Println(params)
 	stmt, err := userDao.db.Prepare("INSERT userinfo SET id=? ,name=?")
 	checkErr(err)
-	res, err := stmt.Exec(28, "test")
+	res, err := stmt.Exec(params...)
 	checkErr(err)
 	fmt.Println(res)
 
