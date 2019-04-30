@@ -1,8 +1,10 @@
 package config
 
 import (
+	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"path/filepath"
 )
 
 type DBConfig struct {
@@ -14,7 +16,10 @@ type DBConfig struct {
 }
 
 func New()(dbConfig * DBConfig)  {
-	configFile, err := ioutil.ReadFile("D:/my_code/go_database/resources/db.yaml")
+	fpath, err := filepath.Abs("resources/db.yaml")
+	checkErr(err)
+	fmt.Println(fpath)
+	configFile, err := ioutil.ReadFile(fpath)
 
 	checkErr(err)
 
