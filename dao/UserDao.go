@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/Go-SQL-Driver/MySQL"
 	config "go_database/config"
+	entity "go_database/entity"
 )
 
 type UserDao struct {
@@ -32,11 +33,10 @@ func (userDao *UserDao) Close()  {
 	userDao.db.Close()
 }
 
-func (userDao *UserDao) InserProfile(params ...interface{})  {
-	fmt.Println(params)
+func (userDao *UserDao) InserProfile(profile *entity.Profile)  {
 	stmt, err := userDao.db.Prepare("INSERT userinfo SET id=? ,name=?")
 	checkErr(err)
-	res, err := stmt.Exec(params...)
+	res, err := stmt.Exec(profile.Id, profile.Name)
 	checkErr(err)
 	fmt.Println(res)
 
