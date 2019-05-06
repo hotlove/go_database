@@ -1,16 +1,28 @@
 package main
 
 import (
+	"fmt"
 	"go_database/dao"
-	"go_database/entity"
+	_ "go_database/entity"
 )
 
 func main() {
 	userDao := dao.New()
 
-	profile := new(entity.Profile)
-	profile.Id = 30
-	profile.Name = "test30"
+	// 新增操作
+	//profile := new(entity.Profile)
+	//profile.Id = 30
+	//profile.Name = "test30"
+	//userDao.InserProfile(profile)
+	//
+	//// 修改操作
+	//profile2 := new(entity.Profile)
+	//profile2.Id = 30
+	//profile2.Name = "test30update"
+	//userDao.UpdateProfileById(profile2)
 
-	userDao.InserProfile(profile)
+	profiles := userDao.QueryProfileId(30)
+	for _, profile := range profiles {
+		fmt.Println("profile is", profile)
+	}
 }
