@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	userDao := dao.New()
+	profileDao := dao.NewProfileDao()
 
 	// 新增操作
 	//profile := new(entity.Profile)
@@ -21,7 +21,7 @@ func main() {
 	//profile2.Name = "test30update"
 	//userDao.UpdateProfileById(profile2)
 
-	profiles := userDao.QueryProfileId(30)
+	profiles := profileDao.QueryProfileId(30)
 	for _, profile := range profiles {
 		fmt.Println("profile is", profile)
 	}

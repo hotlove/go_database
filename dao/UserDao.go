@@ -1,16 +1,13 @@
 package dao
 
 import (
-	"database/sql"
 	"fmt"
-	_ "github.com/Go-SQL-Driver/MySQL"
-	config "go_database/config"
 	entity "go_database/entity"
 	"log"
 )
 
-type UserDao struct {
-	db *sql.DB
+type ProfileDao struct {
+	daoUtil *DaoUtil
 }
 
 /**
@@ -18,30 +15,19 @@ type UserDao struct {
 1. 对于数据库的 增加 删除 修改 操作 操作完后会自动释放链接所以不需要手动关闭
 2. 对于查询操作不会释放 需要 rows.Close 去释放
  */
-func New()(dao *UserDao)  {
-	dbConfig := config.New()
-
-	var driver = dbConfig.Username + ":" + dbConfig.Password + "@tcp(" + dbConfig.Host + ":" + dbConfig.Port + ")/" + dbConfig.Dbname + "?charset=utf8"
-
-	dbConnect, err := sql.Open("mysql", driver)
-
-	checkErr(err)
-
-	return &UserDao{
-		db: dbConnect,
+func NewProfileDao()(dao *ProfileDao)  {
+	daoUtil := NewDaoUtil()
+	return &ProfileDao{
+		daoUtil: daoUtil,
 	}
 
-}
-
-func (userDao *UserDao) Close()  {
-	userDao.db.Close()
 }
 
 /**
 新增用户信息
  */
-func (userDao *UserDao) InserProfile(profile *entity.Profile)  {
-	stmt, err := userDao.db.Prepare("INSERT userinfo SET id=? ,name=?")
+func (profileDao *ProfileDao) InserProfile(profile *entity.Profile)  {
+	stmt, err := profileDao.daoUtil.db.Prepare("INSERT userinfo SET id=? ,name=?")
 	checkErr(err)
 	res, err := stmt.Exec(profile.Id, profile.Name)
 	checkErr(err)
@@ -52,8 +38,8 @@ func (userDao *UserDao) InserProfile(profile *entity.Profile)  {
 /**
 修改用户信息
  */
-func (userDao *UserDao) UpdateProfileById(profile *entity.Profile)  {
-	stmt, err := userDao.db.Prepare("update userinfo set name = ? where id = ?")
+func (profileDao *ProfileDao) UpdateProfileById(profile *entity.Profile)  {
+	stmt, err := profileDao.daoUtil.db.Prepare("update userinfo set name = ? where id = ?")
 	checkErr(err)
 
 	res, err := stmt.Exec(profile.Name, profile.Id)
@@ -64,8 +50,8 @@ func (userDao *UserDao) UpdateProfileById(profile *entity.Profile)  {
 /**
 删除用户信息
  */
-func (userDao *UserDao) DeleteProfileById(id int64)  {
-	stmt, err := userDao.db.Prepare("delete from userinfo where id = ?")
+func (profileDao *ProfileDao) DeleteProfileById(id int64)  {
+	stmt, err := profileDao.daoUtil.db.Prepare("delete from userinfo where id = ?")
 	checkErr(err)
 
 	res, err := stmt.Exec(id)
@@ -74,8 +60,8 @@ func (userDao *UserDao) DeleteProfileById(id int64)  {
 	//userDao.Close()
 }
 
-func (userDao *UserDao) QueryProfileId(id int64)  []entity.Profile{
-	rows, err := userDao.db.Query("select * from userinfo where id = ?", id)
+func (profileDao *ProfileDao) QueryProfileId(id int64)  []entity.Profile{
+	rows, err := profileDao.daoUtil.db.Query("select * from userinfo where id = ?", id)
 	checkErr(err)
 
 	var profiles []entity.Profile
