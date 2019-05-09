@@ -1,9 +1,3 @@
-# username: root
-# password: badu201628117768
-# host: 112.29.173.54
-# port: 3306
-# dbname: go_user
-
 username: root
 password: root  
 host: 127.0.0.1
