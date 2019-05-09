@@ -7,6 +7,11 @@ import (
 )
 
 func main() {
+
+	//var dev string
+	//flag.StringVar(&dev, "dev", "dev", "context profile")
+	//fmt.Println(dev)
+
 	profileDao := dao.NewProfileDao()
 
 	// 新增操作
