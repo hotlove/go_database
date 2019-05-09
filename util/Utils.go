@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"go_database/config"
 )
 
 // md5加密工具
@@ -21,4 +22,12 @@ func StrIsBlank(str string) (res bool) {
 		return true
 	}
 	return false
+}
+
+func ToJsonStr(json interface{}) {
+
+}
+
+func GetContextConfig() (contextConfig *config.ContextConfig) {
+	return config.NewContextConfig()
 }

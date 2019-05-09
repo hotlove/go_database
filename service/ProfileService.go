@@ -6,15 +6,14 @@ import (
 )
 
 type ProfileService struct {
-	
 }
 
-func NewProfileService()  {
-
+func NewProfileService() (profileService *ProfileService) {
+	return &ProfileService{}
 }
 
 var profileDao = new(dao.ProfileDao)
 
-func Login(profile *entity.Profile)  {
+func Login(profile *entity.Profile) {
 
 }

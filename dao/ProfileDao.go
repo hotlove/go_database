@@ -14,20 +14,16 @@ type ProfileDao struct {
 0. sql.db 自带的有连接池 只需要保证open一次 在真正的去操作数据库(curd)时才会真正的去获取链接
 1. 对于数据库的 增加 删除 修改 操作 操作完后会自动释放链接所以不需要手动关闭
 2. 对于查询操作不会释放 需要 rows.Close 去释放
- */
-func NewProfileDao()(dao *ProfileDao)  {
-	daoUtil := NewDaoUtil()
-	return &ProfileDao{
-		daoUtil: daoUtil,
-	}
-
+*/
+func NewProfileDao() (dao *ProfileDao) {
+	return &ProfileDao{}
 }
 
 /**
 新增用户信息
- */
-func (profileDao *ProfileDao) InserProfile(profile *entity.Profile)  {
-	stmt, err := profileDao.daoUtil.db.Prepare("INSERT userinfo SET id=? ,name=?")
+*/
+func (profileDao *ProfileDao) InserProfile(profile *entity.Profile) {
+	stmt, err := daoUtil.db.Prepare("INSERT userinfo SET id=? ,name=?")
 	checkErr(err)
 	res, err := stmt.Exec(profile.Id, profile.Name)
 	checkErr(err)
@@ -37,9 +33,9 @@ func (profileDao *ProfileDao) InserProfile(profile *entity.Profile)  {
 
 /**
 修改用户信息
- */
-func (profileDao *ProfileDao) UpdateProfileById(profile *entity.Profile)  {
-	stmt, err := profileDao.daoUtil.db.Prepare("update userinfo set name = ? where id = ?")
+*/
+func (profileDao *ProfileDao) UpdateProfileById(profile *entity.Profile) {
+	stmt, err := daoUtil.db.Prepare("update userinfo set name = ? where id = ?")
 	checkErr(err)
 
 	res, err := stmt.Exec(profile.Name, profile.Id)
@@ -47,11 +43,12 @@ func (profileDao *ProfileDao) UpdateProfileById(profile *entity.Profile)  {
 	fmt.Println(res)
 	//userDao.Close()
 }
+
 /**
 删除用户信息
- */
-func (profileDao *ProfileDao) DeleteProfileById(id int64)  {
-	stmt, err := profileDao.daoUtil.db.Prepare("delete from userinfo where id = ?")
+*/
+func (profileDao *ProfileDao) DeleteProfileById(id int64) {
+	stmt, err := daoUtil.db.Prepare("delete from userinfo where id = ?")
 	checkErr(err)
 
 	res, err := stmt.Exec(id)
@@ -60,8 +57,8 @@ func (profileDao *ProfileDao) DeleteProfileById(id int64)  {
 	//userDao.Close()
 }
 
-func (profileDao *ProfileDao) QueryProfileId(id int64)  []entity.Profile{
-	rows, err := profileDao.daoUtil.db.Query("select * from userinfo where id = ?", id)
+func (profileDao *ProfileDao) QueryProfileId(id int64) []entity.Profile {
+	rows, err := daoUtil.db.Query("select * from userinfo where id = ?", id)
 	checkErr(err)
 
 	var profiles []entity.Profile
@@ -78,7 +75,7 @@ func (profileDao *ProfileDao) QueryProfileId(id int64)  []entity.Profile{
 	return profiles
 }
 
-func checkErr(err error)  {
+func checkErr(err error) {
 	if err != nil {
 		log.Println(err)
 		panic(err)
