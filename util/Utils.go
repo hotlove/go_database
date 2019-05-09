@@ -6,7 +6,7 @@ import (
 )
 
 // md5加密工具
-func MD5(text string) (res string)  {
+func MD5(text string) (res string) {
 	data := []byte(text)
 
 	md5Ctx := md5.New()
@@ -14,4 +14,11 @@ func MD5(text string) (res string)  {
 
 	encyData := md5Ctx.Sum(nil)
 	return hex.EncodeToString(encyData)
+}
+
+func StrIsBlank(str string) (res bool) {
+	if str == "" || len(str) == 0 {
+		return true
+	}
+	return false
 }
