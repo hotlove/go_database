@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"go_database/dao"
 	_ "go_database/entity"
+	"go_database/server/http"
 )
 
 func main() {
@@ -12,7 +11,7 @@ func main() {
 	//flag.StringVar(&dev, "dev", "dev", "context profile")
 	//fmt.Println(dev)
 
-	profileDao := dao.NewProfileDao()
+	//profileDao := dao.NewProfileDao()
 
 	// 新增操作
 	//profile := new(entity.Profile)
@@ -26,8 +25,13 @@ func main() {
 	//profile2.Name = "test30update"
 	//userDao.UpdateProfileById(profile2)
 
-	profiles := profileDao.QueryProfileId(30)
-	for _, profile := range profiles {
-		fmt.Println("profile is", profile)
-	}
+	//profiles := profileDao.QueryProfileId(30)
+	//for _, profile := range profiles {
+	//	fmt.Println("profile is", profile)
+	//}
+
+	http.Start()
+
+	//http.NewServer().Start("127.0.0.1", 8080)
+
 }
