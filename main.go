@@ -30,6 +30,7 @@ func main() {
 	//	fmt.Println("profile is", profile)
 	//}
 
+	// 启动默认http服务
 	http.Start()
 
 	//http.NewServer().Start("127.0.0.1", 8080)
