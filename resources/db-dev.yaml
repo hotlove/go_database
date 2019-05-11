@@ -1,5 +1,5 @@
 username: root
-password: badu201628117768
-host: 112.29.173.54
+password: root  
+host: 127.0.0.1
 port: 3306
-dbname: go_user
+dbname: go_project
