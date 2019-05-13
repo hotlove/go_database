@@ -1,13 +1,15 @@
-package http
+package router
 
 import (
 	"fmt"
 	"net/http"
 )
 
-var routerHandler *RouterHandler = new(RouterHandler)
-
 type RouterHandler struct{}
+
+func NewRouterHandler() *RouterHandler {
+	return &RouterHandler{}
+}
 
 var mux = make(map[string]func(w http.ResponseWriter, r *http.Request))
 

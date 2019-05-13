@@ -1,6 +1,8 @@
 package http
 
 import (
+	"go_database/controller"
+	"go_database/server/router"
 	"log"
 	"net/http"
 	"strconv"
@@ -23,6 +25,8 @@ func (httpServer *HttpServer) Start(host string, port int) {
 
 	var hostPort = host + ":" + strconv.Itoa(port)
 
+	routerHandler := router.NewRouterHandler()
+
 	server := &http.Server{
 		Addr:        hostPort,
 		Handler:     routerHandler,
@@ -41,6 +45,6 @@ func (httpServer *HttpServer) Start(host string, port int) {
 	//http.ListenAndServe(hostPort, nil)
 }
 
-func RegisterRouter(routerHandler *RouterHandler) {
-
+func RegisterRouter(routerHandler *router.RouterHandler) {
+	new(controller.ProfileController).RegisterRouter(routerHandler)
 }

@@ -17,6 +17,7 @@ func MD5(text string) (res string) {
 	return hex.EncodeToString(encyData)
 }
 
+// 判断字符串是否为空
 func StrIsBlank(str string) (res bool) {
 	if str == "" || len(str) == 0 {
 		return true
@@ -28,6 +29,12 @@ func ToJsonStr(json interface{}) {
 
 }
 
+// 获取配置文件对象
 func GetContextConfig() (contextConfig *config.ContextConfig) {
 	return config.NewContextConfig()
+}
+
+// 解析表单数据
+func ParsePOSTForm(key string) {
+
 }
