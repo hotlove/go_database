@@ -1,6 +1,7 @@
 package http
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -30,8 +31,10 @@ func (httpServer *HttpServer) Start(host string, port int) {
 
 	// 注册路由
 	RegisterRouter(routerHandler)
+	log.Println("[INFO] register routers info")
 
 	// 启动服务
+	log.Println("[INFO] start server at:", port)
 	server.ListenAndServe()
 
 	//http.HandleFunc("/", sayhelloName)

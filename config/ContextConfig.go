@@ -8,7 +8,8 @@ import (
 )
 
 type ContextConfig struct {
-	Env string // 系统环境 dev test prod
+	Env  string // 系统环境 dev test prod
+	Name string // 系统名字根目录
 }
 
 func NewContextConfig() (context *ContextConfig) {
