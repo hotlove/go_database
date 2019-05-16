@@ -25,12 +25,16 @@ func handleChat(conn net.Conn) {
 	// 第一登陆注册链接
 	conn.Write([]byte(registerInfo))
 
-	buffer := make([]byte, 2048)
-	for {
-		n, err := conn.Read(buffer)
-		checkError(err)
-		fmt.Println("receiver message:" + string(buffer[:n]))
+	go func() {
+		for {
+			buffer := make([]byte, 2048)
+			n, err := conn.Read(buffer)
+			checkError(err)
+			fmt.Println("receiver message:" + string(buffer[:n]))
+		}
+	}()
 
+	for {
 		// 等待键盘输入数据
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()

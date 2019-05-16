@@ -27,8 +27,9 @@ func StartServer() {
 	checkError(err)
 	for {
 		// 阻塞等待链接过来
+		fmt.Println("wait connect...")
 		conn, err := listener.Accept()
-		fmt.Println("connect coming...")
+
 		if err != nil {
 			checkError(err)
 			continue
@@ -61,34 +62,34 @@ func registerConn(conn net.Conn) {
 				// 如果没有注册链接则注册一个链接
 				if _, ok := connManager[sender]; !ok {
 					connManager[sender] = conn
-					fmt.Println(sender + "register conn.....")
+					fmt.Println(sender+"register conn.....", conn)
 					conn.Write([]byte("register successfully"))
 				}
 			}
 		} else {
 			// 说明是发送消息
-			if receiver != "" {
 
-				senderConn, ok := connManager[sender]
-				if !ok {
-					// 说明没有注册信息抛弃
-					log.Println(sender + "not register conn")
-				}
-
-				receiverConn, ok := connManager[receiver]
-				if !ok {
-					// 说明接受者没注册
-					log.Println(receiver + "not register conn")
-				}
-
-				buffer := make([]byte, 2018)
-
-				// 从发送者收到数据
-				n, err := senderConn.Read(buffer)
-				checkError(err)
-				// 转发给接收者
-				receiverConn.Write(buffer[:n])
+			senderConn, ok := connManager[sender]
+			if !ok {
+				// 说明没有注册信息抛弃
+				log.Println(sender + "not register conn")
 			}
+
+			receiverConn, ok := connManager[receiver]
+			if !ok {
+				// 说明接受者没注册
+				log.Println(receiver + "not register conn")
+			}
+
+			fmt.Printf("sender %v \n", senderConn)
+			fmt.Printf("receiver %v \n", receiverConn)
+
+			// 从发送者收到数据
+			fmt.Println(sender + " send message [" + value + "] to" + receiver)
+
+			// 转发给接收者
+			receiverConn.Write([]byte(value))
+
 		}
 	}
 

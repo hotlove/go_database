@@ -15,7 +15,7 @@ func main() {
 
 	//testIp()
 
-	// startSocketServer()
+	//startSocketServer()
 	socket.NewSocketClient()
 }
 
