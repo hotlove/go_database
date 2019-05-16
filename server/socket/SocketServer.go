@@ -3,12 +3,16 @@ package socket
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"net"
 	"os"
+	"strings"
 )
 
 type SocketServer struct {
 }
+
+var connManager = map[string]net.Conn{}
 
 func StartServer() {
 	// ip + port 地址
@@ -31,9 +35,63 @@ func StartServer() {
 		}
 
 		// 开启一个goruntine 处理链接
-		go handleTCPClient(conn)
+		go registerConn(conn)
 
 	}
+}
+
+func registerConn(conn net.Conn) {
+
+	for {
+		buffer := make([]byte, 1024)
+		n, err := conn.Read(buffer)
+		checkError(err)
+		identity := string(buffer[:n])
+		fmt.Println(identity)
+
+		// 解析参数
+		//  sender,receiver,message
+		messages := strings.Split(identity, ",")
+		var sender = messages[0]
+		var receiver = messages[1]
+		var value = messages[2]
+		// 说明是注册链接信息
+		if value == "r" {
+			if sender != "" {
+				// 如果没有注册链接则注册一个链接
+				if _, ok := connManager[sender]; !ok {
+					connManager[sender] = conn
+					fmt.Println(sender + "register conn.....")
+					conn.Write([]byte("register successfully"))
+				}
+			}
+		} else {
+			// 说明是发送消息
+			if receiver != "" {
+
+				senderConn, ok := connManager[sender]
+				if !ok {
+					// 说明没有注册信息抛弃
+					log.Println(sender + "not register conn")
+				}
+
+				receiverConn, ok := connManager[receiver]
+				if !ok {
+					// 说明接受者没注册
+					log.Println(receiver + "not register conn")
+				}
+
+				buffer := make([]byte, 2018)
+
+				// 从发送者收到数据
+				n, err := senderConn.Read(buffer)
+				checkError(err)
+				// 转发给接收者
+				receiverConn.Write(buffer[:n])
+			}
+		}
+	}
+
 }
 
 func handleTCPClient(conn net.Conn) {

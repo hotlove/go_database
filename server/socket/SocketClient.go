@@ -13,9 +13,39 @@ func NewSocketClient() {
 	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
 	checkError(err)
 
-	tcpConn, err := net.DialTCP("tcp4", nil, tcpAddr)
+	conn, err := net.DialTCP("tcp4", nil, tcpAddr)
 	checkError(err)
 
+	handleChat(conn)
+}
+
+func handleChat(conn net.Conn) {
+
+	registerInfo := "2,1,r"
+	// 第一登陆注册链接
+	conn.Write([]byte(registerInfo))
+
+	buffer := make([]byte, 2048)
+	for {
+		n, err := conn.Read(buffer)
+		checkError(err)
+		fmt.Println("receiver message:" + string(buffer[:n]))
+
+		// 等待键盘输入数据
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		if err := scanner.Err(); err != nil {
+			fmt.Fprintln(os.Stderr, "error:", err)
+		}
+
+		message := scanner.Text()
+		fmt.Println("send message..." + message)
+		conn.Write([]byte(message))
+	}
+
+}
+
+func handleClient(conn net.Conn) {
 	buffer := make([]byte, 2048)
 	for {
 
@@ -27,14 +57,11 @@ func NewSocketClient() {
 
 		message := scanner.Text()
 		fmt.Println("send message..." + message)
-		tcpConn.Write([]byte(message))
+		conn.Write([]byte(message))
 
-		n, err := tcpConn.Read(buffer)
+		n, err := conn.Read(buffer)
 		checkError(err)
 		fmt.Println("server message..." + string(buffer[:n]))
 
 	}
-
-	os.Exit(0)
-
 }
