@@ -26,11 +26,12 @@ func handleChat(conn net.Conn) {
 	conn.Write([]byte(registerInfo))
 
 	go func() {
+		// 开启线程 循环接受消息
 		for {
 			buffer := make([]byte, 2048)
 			n, err := conn.Read(buffer)
 			checkError(err)
-			fmt.Println("receiver message:" + string(buffer[:n]))
+			fmt.Println("sender message:" + string(buffer[:n]))
 		}
 	}()
 

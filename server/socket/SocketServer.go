@@ -48,7 +48,6 @@ func registerConn(conn net.Conn) {
 		n, err := conn.Read(buffer)
 		checkError(err)
 		identity := string(buffer[:n])
-		fmt.Println(identity)
 
 		// 解析参数
 		//  sender,receiver,message
@@ -69,11 +68,11 @@ func registerConn(conn net.Conn) {
 		} else {
 			// 说明是发送消息
 
-			senderConn, ok := connManager[sender]
-			if !ok {
-				// 说明没有注册信息抛弃
-				log.Println(sender + "not register conn")
-			}
+			//senderConn, ok := connManager[sender]
+			//if !ok {
+			//	// 说明没有注册信息抛弃
+			//	log.Println(sender + "not register conn")
+			//}
 
 			receiverConn, ok := connManager[receiver]
 			if !ok {
@@ -81,11 +80,11 @@ func registerConn(conn net.Conn) {
 				log.Println(receiver + "not register conn")
 			}
 
-			fmt.Printf("sender %v \n", senderConn)
-			fmt.Printf("receiver %v \n", receiverConn)
+			//fmt.Printf("sender %v \n", senderConn)
+			//fmt.Printf("receiver %v \n", receiverConn)
 
 			// 从发送者收到数据
-			fmt.Println(sender + " send message [" + value + "] to" + receiver)
+			fmt.Println(sender + "to" + receiver + " send message: [" + value + "]")
 
 			// 转发给接收者
 			receiverConn.Write([]byte(value))
