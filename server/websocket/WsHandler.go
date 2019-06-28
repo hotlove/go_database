@@ -78,17 +78,38 @@ func registerConnHandler(profileId int, conn *websocket.Conn) {
 // 处理聊天消息
 func chatHandler(packet *Packet) {
 	// 找到接收人连接
-	recvConn := connManager[packet.RecvProfileId]
 
-	// 发送消息给到接收者
-	writerErr := recvConn.WriteMessage(websocket.TextMessage, []byte(packet.Message))
-	if writerErr != nil {
-		log.Println(writerErr)
+	// 1.接收消息的人是否在线
+	recvConn, exist := connManager[packet.RecvProfileId]
+
+	// 2.根据是否在线消息状态变为不同的不同的状态
+
+	var isNeedSend = true
+	if exist {
+		// 如果接收人存在
+	} else {
+		// 标记消息离线消息
+		isNeedSend = false
 	}
+	// 3.消息入库
+
+	// 4.发送消息给到接收者
+	if isNeedSend {
+		// 如果对方不在线是不需要发送消息的
+		writerErr := recvConn.WriteMessage(websocket.TextMessage, []byte(packet.Message))
+		if writerErr != nil {
+			log.Println(writerErr)
+		}
+	}
+
 }
 
 func disconnectHandler(profileId int) {
 	// 从管理map中移除该连接
+	sendConn := connManager[profileId]
+	// 关闭连接
+	sendConn.Close()
+
 	delete(connManager, profileId)
 }
 func closeConn(conn *websocket.Conn) {
