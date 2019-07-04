@@ -4,7 +4,7 @@ import (
 	"fmt"
 	_ "go_database/entity"
 	"go_database/server/socket"
-	"go_database/server/websocket"
+	"go_database/util"
 	"net"
 	"os"
 )
@@ -20,7 +20,11 @@ func main() {
 	//socket.NewSocketClient()
 
 	// websocket
-	websocket.StartServer()
+	//websocket.StartServer()
+
+	// redis
+	value := util.RedisGetValue("foo")
+	fmt.Println(value)
 }
 
 func startSocketServer() {
