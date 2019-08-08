@@ -4,9 +4,9 @@ import (
 	"fmt"
 	_ "go_database/entity"
 	"go_database/server/socket"
-	"go_database/util"
 	"net"
 	"os"
+	"time"
 )
 
 func main() {
@@ -23,8 +23,19 @@ func main() {
 	//websocket.StartServer()
 
 	// redis
-	value := util.RedisGetValue("foo")
-	fmt.Println(value)
+	//value := util.RedisGetValue("foo")
+	//fmt.Println(value)
+
+	// 定时器
+	tick := time.NewTicker(1 * time.Second)
+
+	for {
+		select {
+		case dateTime := <-tick.C:
+			// 这里面有格式化时间在里面
+			fmt.Println(dateTime.Format("2006/01/02 15/04/05"), "执行了")
+		}
+	}
 }
 
 func startSocketServer() {
