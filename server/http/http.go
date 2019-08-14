@@ -2,6 +2,7 @@ package http
 
 import (
 	"go_database/controller"
+	"go_database/logger"
 	"go_database/server/router"
 	"log"
 	"net/http"
@@ -35,10 +36,13 @@ func (httpServer *HttpServer) Start(host string, port int) {
 
 	// 注册路由
 	RegisterRouter(routerHandler)
-	log.Println("[INFO] register routers info")
+	logger.Info("register routers")
 
 	// 启动服务
-	log.Println("[INFO] start server at:", port)
+	// strconv.Itoa => int -> string
+	// strconv.Atoi => string -> int
+	logger.Info("start server at:" + strconv.Itoa(port))
+
 	server.ListenAndServe()
 
 	//http.HandleFunc("/", sayhelloName)

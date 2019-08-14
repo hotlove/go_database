@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	_ "go_database/entity"
-	Logger "go_database/log"
+	Logger "go_database/logger"
 	"go_database/server/socket"
 	"net"
 	"os"
