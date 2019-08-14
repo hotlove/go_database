@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	_ "go_database/entity"
+	Logger "go_database/log"
 	"go_database/server/socket"
 	"net"
 	"os"
-	"time"
 )
 
 func main() {
@@ -27,15 +27,33 @@ func main() {
 	//fmt.Println(value)
 
 	// 定时器
-	tick := time.NewTicker(1 * time.Second)
+	//tick := time.NewTicker(1 * time.Second)
+	//
+	//for {
+	//	select {
+	//	case dateTime := <-tick.C:
+	//		// 这里面有格式化时间在里面
+	//		fmt.Println(dateTime.Format("2006/01/02 15/04/05"), "执行了")
+	//	}
+	//}
 
-	for {
-		select {
-		case dateTime := <-tick.C:
-			// 这里面有格式化时间在里面
-			fmt.Println(dateTime.Format("2006/01/02 15/04/05"), "执行了")
-		}
-	}
+	// 日志
+	// Println 写到标准日志记录器
+	//log.Println("message")
+	//
+	//// Fatalln 在调用println 之后紧接着调用os.Exit(1)
+	//log.Fatalln("fatal message")
+	//
+	////
+	//log.Panicln("panic message")
+
+	Logger.Info("info message")
+
+}
+
+func init() {
+	//log.SetPrefix("TRACE:")
+	//log.SetFlags(log.Ldate | log.Lmicroseconds | log.Llongfile)
 }
 
 func startSocketServer() {
