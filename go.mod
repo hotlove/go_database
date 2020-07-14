@@ -8,3 +8,5 @@ require (
 	github.com/gorilla/websocket v1.4.0
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+replace eorm => github.com/hotlove/eorm // indirect
